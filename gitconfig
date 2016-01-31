@@ -1,0 +1,24 @@
+[alias]
+  s = status -sb
+  co = checkout
+  b = branch
+  dt = difftool
+  dh = difftool origin/master HEAD
+  dhn = difftool origin/master HEAD --name-only
+  oneline = log --oneline --abbrev-commit --all --graph --decorate --color
+  o = log --oneline --abbrev-commit --all --graph --decorate --color
+[user]
+  email = estaab@google.com
+  name = Erik Staab
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = false
+  tool = vimdiff
+[color]
+[core]
+  pager = "less -FRSX"
+[http]
+	cookiefile = /usr/local/google/home/estaab/.gitcookies
+[push]
+	default = simple
