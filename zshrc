@@ -70,6 +70,16 @@ alias srcc="source ~/.zshrc"
 alias vi="vim -X"
 alias on="screen -x -R"
 
+alias vg="vi ~/.gitconfig"
+alias vv="vi ~/.vimrc"
+alias vzr="vi ~/.zshrc"
+alias vze="vi ~/.zshenv"
+
+bindkey "^[[1;5D" backward-word  # ctrl left
+bindkey "^[[1;5C" forward-word  # ctrl right
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+
 bindkey '^F' history-beginning-search-backward
 bindkey '^G' history-beginning-search-forward
 bindkey '^D' kill-word
@@ -178,7 +188,7 @@ if [ -z "$HISTFILE" ]; then
   typeset -r SAVEHIST=90000
 fi
 
-source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 #ZSH_HIGHLIGHT_PATTERNS+=('rm -rf ' 'fg=white,bold,bg=red')

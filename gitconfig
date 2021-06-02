@@ -7,6 +7,10 @@
   dhn = difftool origin/master HEAD --name-only
   oneline = log --oneline --abbrev-commit --all --graph --decorate --color
   o = log --oneline --abbrev-commit --all --graph --decorate --color
+  ru = rebase-update
+  ac = commit -a
+  aca = commit -a --amend
+  n = checkout --track origin/main -b
 [user]
   email = estaab@google.com
   name = Erik Staab
@@ -18,7 +22,12 @@
 [color]
 [core]
   pager = "less -FRSX"
+  precomposeUnicode = true
 [http]
-	cookiefile = /usr/local/google/home/estaab/.gitcookies
+  cookiefile = /usr/local/google/home/estaab/.gitcookies
 [push]
-	default = simple
+  default = simple
+[pager]
+  branch = false
+[pull]
+  rebase = true

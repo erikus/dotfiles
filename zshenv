@@ -35,4 +35,6 @@ export TIME='%es wall  %Us user  %Ss system  %P load    %C'
 
 export GOPATH='/usr/local/google/home/estaab/go'
 
+export PATH=/usr/local/google/home/estaab/depot_tools:$PATH
+
 export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
