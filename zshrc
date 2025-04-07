@@ -60,7 +60,7 @@ function _exit() {
 }
 
 # aliases
-alias ls="ls --color=auto --block-size=K"
+alias ls="ls --color=auto "
 alias sl="ls"
 alias tree='tree -Csu'
 alias cat='cat -v'
@@ -188,7 +188,11 @@ if [ -z "$HISTFILE" ]; then
   typeset -r SAVEHIST=90000
 fi
 
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [[ $(uname) = Darwin ]] then 
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 #ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 #ZSH_HIGHLIGHT_PATTERNS+=('rm -rf ' 'fg=white,bold,bg=red')

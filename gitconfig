@@ -31,3 +31,5 @@
   branch = false
 [pull]
   rebase = true
+[submodule]
+  recurse = true
