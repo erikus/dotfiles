@@ -140,6 +140,11 @@ function setup_prompt {
 setup_prompt
 
 # --- History ---
+# Migrate old bash_history to zsh_history if needed
+if [[ -f ~/.bash_history && ! -f ~/.zsh_history ]]; then
+  cp ~/.bash_history ~/.zsh_history
+fi
+
 if [[ -z "$HISTFILE" ]]; then
   typeset -r HISTFILE=~/.zsh_history
   typeset -r HISTSIZE=90000
