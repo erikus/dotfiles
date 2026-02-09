@@ -180,5 +180,5 @@ fi
 # --- Optional environment-specific configs ---
 # Source bash/legacy compatibility settings if present
 [[ -f "${ZDOTDIR:-$HOME}/.zshrc.compat" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.compat"
-# Source Google-internal settings if present
-[[ -f "${ZDOTDIR:-$HOME}/.zshrc.google" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.google"
+# Source special settings if present
+[[ -f "${ZDOTDIR:-$HOME}/.zshrc.special" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.special"
