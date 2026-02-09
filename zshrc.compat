@@ -24,7 +24,7 @@ alias cat='cat -v'
 
 # Screen exit guards
 function exit() {
-  if [[ -n "$STY" ]]; then
+  if [[ -z "$STY" ]]; then
     unfunction exit
     exit
   fi
