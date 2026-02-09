@@ -1,4 +1,4 @@
-# Google-internal zshrc settings
+# Special zshrc settings
 
 # Perforce vimdiff wrapper
 function gvd() {

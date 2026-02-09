@@ -1,4 +1,4 @@
-# Google-internal environment variables
+# Special environment variables
 
 export ENFORCE_TOOLS_COMPATIBILITY=0
 export P4CONFIG=.p4config

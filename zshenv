@@ -145,5 +145,5 @@ export TIME='%es wall  %Us user  %Ss system  %P load    %C'
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 # --- Optional environment-specific configs ---
-# Source Google-internal settings if present
-[[ -f "${ZDOTDIR:-$HOME}/.zshenv.google" ]] && source "${ZDOTDIR:-$HOME}/.zshenv.google"
+# Source special settings if present
+[[ -f "${ZDOTDIR:-$HOME}/.zshenv.special" ]] && source "${ZDOTDIR:-$HOME}/.zshenv.special"
