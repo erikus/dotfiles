@@ -1,69 +1,21 @@
-# erik's global zshrc file
+# erik's zshrc - interactive shell configuration
 
-# default prompt color
-PROMPT_COLOR='\[\e\[0;39m\]'
-PROMPT_COLOR2='\[\e\[0;39m\]'
-
+# --- Completion ---
 autoload -U compinit
 compinit
 
-# source site specific resources
-for bashrc in `/bin/ls -a ~ | grep bashrc.`
-do
-  if [ -f ~/$bashrc ]; then
-    source ~/$bashrc
-  fi
+# Source site-specific configs
+for rc in ~/.bashrc.*(N); do
+  source "$rc"
 done
 
-# Don't use ^D to exit
-set -o ignoreeof
-
-# turn off the bell
-set bell-style none
-
-# Don't put duplicate lines in the history.
-export HISTCONTROL=erasedups
-# export HISTIGNORE=" *:[^./]*([^ ])"
-
-# command line prompt, in color
-#PS1="$PROMPT_COLOR\h:$PROMPT_COLOR2\w$PROMPT_COLOR\$\[\e[0m\] "
-
-# ignore unlikely files
+# Ignore unlikely file extensions in completion
 FIGNORE='.o:~:.class:.pyc'
 
-# grep colors
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='1;32'
-
-# make subversion happy
-export SVN_EDITOR=/usr/bin/vim
-export EDITOR=/usr/bin/vim
-
-# make files only mine by default
-umask 027
-
-function gvd() {
-  DISPLAY= P4DIFF=vimdiff g4 diff $@
-}
-
-function exit() {
-  if [ -e $STY ]; then
-    unfunction exit
-    exit
-  fi
-  echo "You're in screen, don't exit!"
-}
-
-function _exit() {
-  unfunction exit
-  exit
-}
-
-# aliases
-alias ls="ls --color=auto "
+# --- Aliases ---
+alias ls="ls --color=auto"
 alias sl="ls"
 alias tree='tree -Csu'
-alias cat='cat -v'
 alias p="ps x -o pgrp,pid,cmd"
 
 alias srcc="source ~/.zshrc"
@@ -75,62 +27,68 @@ alias vv="vi ~/.vimrc"
 alias vzr="vi ~/.zshrc"
 alias vze="vi ~/.zshenv"
 
-bindkey "^[[1;5D" backward-word  # ctrl left
-bindkey "^[[1;5C" forward-word  # ctrl right
+# --- Key bindings ---
+
+# Navigation
+bindkey "^[[1;5D" backward-word           # ctrl-left
+bindkey "^[[1;5C" forward-word            # ctrl-right
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 
+# History search
 bindkey '^F' history-beginning-search-backward
 bindkey '^G' history-beginning-search-forward
-bindkey '^D' kill-word
-bindkey "$(echotc @7)" end-of-line           # end
+bindkey '^R' history-incremental-pattern-search-backward
 
+# Editing
 bindkey '^S' menu-complete
+bindkey '^L' clear-screen
+bindkey '^P' yank
+bindkey '^W' backward-kill-word
 
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^O' edit-command-line
 
-bindkey '^L' clear-screen
-bindkey '^P' yank
-bindkey '^W' backward-kill-word
-bindkey '^R' history-incremental-pattern-search-backward
-
-# This doesn't appear to be in the version of zsh I'm running (4.3)
-function xxx-bash-backward-kill-word() {
+# Custom backward-kill-word that respects shell word boundaries
+function zsh-backward-kill-word() {
   local WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
   zle .backward-kill-word
 }
-zle -N xxx-bash-backward-kill-word xxx-bash-backward-kill-word
-bindkey '^D' xxx-bash-backward-kill-word
-bindkey "^[[5C" forward-word          # shift-right
-bindkey ";5C" forward-word          # shift-right
-bindkey ";2C" forward-word          # shift-right
-bindkey "^[[5D" backward-word        # shift-left
-bindkey ";5D" backward-word        # shift-left
-bindkey ";2D" backward-word        # shift-left
-bindkey -r "^[[5;"  # shift-left
+zle -N zsh-backward-kill-word
+bindkey '^D' zsh-backward-kill-word
+
+# Terminal key bindings via termcap
+bindkey "^[[5C" forward-word              # shift-right
+bindkey ";5C" forward-word                # shift-right
+bindkey ";2C" forward-word                # shift-right
+bindkey "^[[5D" backward-word             # shift-left
+bindkey ";5D" backward-word               # shift-left
+bindkey ";2D" backward-word               # shift-left
+bindkey -r "^[[5;"
+
 { local saveterm="$TERM"; TERM=xterm-vt220-full
-bindkey "$(echotc %i)" forward-word          # shift-right
-bindkey "$(echotc \#3)" yank                 # shift-insert
-bindkey "$(echotc \#4)" backward-word        # shift-left
-bindkey "$(echotc \*7)" end-of-history       # shift-end
+bindkey "$(echotc %i)" forward-word       # shift-right
+bindkey "$(echotc \#3)" yank              # shift-insert
+bindkey "$(echotc \#4)" backward-word     # shift-left
+bindkey "$(echotc \*7)" end-of-history    # shift-end
 TERM="$saveterm" } 2> /dev/null
-bindkey "$(echotc @7)" end-of-line           # end
-bindkey "$(echotc kD)" delete-char           # delete
-bindkey "$(echotc kI)" overwrite-mode        # insert
-bindkey "$(echotc kN)" down-history          # page down
-bindkey "$(echotc kP)" up-history            # page up
+
+bindkey "$(echotc @7)" end-of-line        # end
+bindkey "$(echotc kD)" delete-char        # delete
+bindkey "$(echotc kI)" overwrite-mode     # insert
+bindkey "$(echotc kN)" down-history       # page down
+bindkey "$(echotc kP)" up-history         # page up
 bindkey "$(echotc kb)" backward-delete-char  # backspace
 bindkey "$(echotc kd)" down-line-or-history  # down arrow
-bindkey "$(echotc kh)" beginning-of-line     # home
-bindkey "$(echotc kl)" backward-char         # left arrow
-bindkey "$(echotc kr)" forward-char          # right arrow
-bindkey "$(echotc ku)" up-line-or-history    # up arrow
+bindkey "$(echotc kh)" beginning-of-line  # home
+bindkey "$(echotc kl)" backward-char      # left arrow
+bindkey "$(echotc kr)" forward-char       # right arrow
+bindkey "$(echotc ku)" up-line-or-history # up arrow
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-# stolen from ambrose
+# --- Prompt ---
 function setup_prompt {
   typeset -gH reset="$(echotc me)"
   typeset -gH bold="$(echotc md)"
@@ -144,9 +102,8 @@ function setup_prompt {
   typeset -gH cyan="$(echotc AF 6 6 6)"
   typeset -gH white="$(echotc AF 7 7 7)"
   typeset -gH reverse="$(echotc mr)"
-  # set screen hardstatus, or xterm icon name and window title
+
   function hardstatus { print -n "\e]0;" && print -Rn "$@" && print -n "\a" }
-  # set screen window title
   function windowname { [[ -n "$WINDOW" ]] && print -n "\ek" && print -Rn "$@" && print -n "\e\\" }
 
   function precmd {
@@ -155,12 +112,13 @@ function setup_prompt {
     jobs
     hardstatus "$(print -Pn "[%m:%~] %%")"
     windowname "$(print -Pn "%2~%#")"
-    if [ -n "$precmd_cmd" -a $cmd_status -ne 0 ]; then
+    if [[ -n "$precmd_cmd" && $cmd_status -ne 0 ]]; then
       print -Rn "$reset$bold$red"
       print "$cmd_status: $precmd_cmd"
     fi
     precmd_cmd=''
   }
+
   function preexec {
     print -n "$reset"
     local cmd="$1"
@@ -174,60 +132,41 @@ function setup_prompt {
     windowname "$(print -Pn "%2~:")""$cmd"
   }
 
-  typeset -gH PS1="%{$reset$bold$cyan%}%m%{$white%}:%{$yellow%}\${PWD##$HOME/#}%{$reset$bold%}\${WINDOW:+.s$WINDOW}%# %{$reset%}"
+  typeset -gH PS1="%{$reset$bold$cyan%}%m%{$white%}:%{$yellow%}%~%{$reset$bold%}\${WINDOW:+.s$WINDOW}%# %{$reset%}"
   typeset -gH PROMPT prompt
   typeset -gH POSTEDIT="$reset"
 }
 
 setup_prompt
 
-# history
-if [ -z "$HISTFILE" ]; then
-  typeset -r HISTFILE=~/.bash_history
+# --- History ---
+if [[ -z "$HISTFILE" ]]; then
+  typeset -r HISTFILE=~/.zsh_history
   typeset -r HISTSIZE=90000
   typeset -r SAVEHIST=90000
 fi
 
-if [[ $(uname) = Darwin ]] then 
-  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# --- Syntax highlighting ---
+local _zsh_hl
+if [[ $(uname) = Darwin ]]; then
+  _zsh_hl=/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
-  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  _zsh_hl=/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-#ZSH_HIGHLIGHT_PATTERNS+=('rm -rf ' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=cyan'
+if [[ -f "$_zsh_hl" ]]; then
+  source "$_zsh_hl"
+  ZSH_HIGHLIGHT_STYLES[globbing]='fg=cyan'
+  ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
+  ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow'
+  ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=cyan'
+  ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=cyan'
+fi
 
-###-begin-npm-completion-###
-#
-# npm command completion script
-#
-# Installation: npm completion >> ~/.bashrc  (or ~/.zshrc)
-# Or, maybe: npm completion > /usr/local/etc/bash_completion.d/npm
-#
-
-COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
-COMP_WORDBREAKS=${COMP_WORDBREAKS/@/}
-export COMP_WORDBREAKS
-
-if type complete &>/dev/null; then
-  _npm_completion () {
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$COMP_CWORD" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           npm completion -- "${COMP_WORDS[@]}" \
-                           2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  complete -F _npm_completion npm
-elif type compdef &>/dev/null; then
+# --- npm completion ---
+if type compdef &>/dev/null; then
   _npm_completion() {
-    si=$IFS
+    local si=$IFS
     compadd -- $(COMP_CWORD=$((CURRENT-1)) \
                  COMP_LINE=$BUFFER \
                  COMP_POINT=0 \
@@ -236,22 +175,4 @@ elif type compdef &>/dev/null; then
     IFS=$si
   }
   compdef _npm_completion npm
-elif type compctl &>/dev/null; then
-  _npm_completion () {
-    local cword line point words si
-    read -Ac words
-    read -cn cword
-    let cword-=1
-    read -l line
-    read -ln point
-    si="$IFS"
-    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       npm completion -- "${words[@]}" \
-                       2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  compctl -K _npm_completion npm
 fi
-###-end-npm-completion-###
