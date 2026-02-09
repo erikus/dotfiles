@@ -1,0 +1,10 @@
+# Google-internal environment variables
+
+export ENFORCE_TOOLS_COMPATIBILITY=0
+export P4CONFIG=.p4config
+export P4EDITOR="$EDITOR"
+export GOPATH='/usr/local/google/home/estaab/go'
+export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
+
+# depot_tools
+export PATH=/usr/local/google/home/estaab/depot_tools:$PATH
