@@ -1,0 +1,6 @@
+# Google-internal zshrc settings
+
+# Perforce vimdiff wrapper
+function gvd() {
+  DISPLAY= P4DIFF=vimdiff g4 diff $@
+}

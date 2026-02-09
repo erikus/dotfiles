@@ -143,3 +143,7 @@ export TIME='%es wall  %Us user  %Ss system  %P load    %C'
 # --- Optional tool integrations ---
 # Cargo/Rust
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
+# --- Optional environment-specific configs ---
+# Source Google-internal settings if present
+[[ -f "${ZDOTDIR:-$HOME}/.zshenv.google" ]] && source "${ZDOTDIR:-$HOME}/.zshenv.google"
