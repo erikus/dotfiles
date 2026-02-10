@@ -1,73 +1,103 @@
 " General vim settings.
 
-filetype plugin indent on
+" ---------------------------------------------------------------------------
+" Filetype and syntax
+" ---------------------------------------------------------------------------
+filetype plugin indent on       " Enable filetype detection, plugins, and indent files
+syntax on                       " Enable syntax highlighting
 
-" color fixes for diffing
+" ---------------------------------------------------------------------------
+" Diff highlighting
+" ---------------------------------------------------------------------------
 hi DiffChange term=bold ctermbg=92 guibg=DarkMagenta
 hi DiffText term=reverse cterm=bold ctermbg=124 gui=bold guibg=Red
 
-" General editor settings.
-set cursorline
-set tw=0
-set ts=2
-set sw=2
-set ic
-set smartcase
-set ai
-set incsearch
-set nocompatible
-syntax on
-set backspace=indent,eol,start
-set background=dark
-set expandtab
-set vb
-set scrolloff=10
-set ttimeoutlen=10
-set lazyredraw
+" ---------------------------------------------------------------------------
+" Core editor behavior
+" ---------------------------------------------------------------------------
+set nocompatible                " Disable vi compatibility mode
+set cursorline                  " Highlight the current line
+set backspace=indent,eol,start  " Allow backspace over indentation, line breaks, and insert start
+set background=dark             " Optimize colors for dark terminal backgrounds
+set incsearch                   " Show search matches as you type
+set ic                          " ignorecase: case-insensitive search by default
+set smartcase                   " Override ignorecase when search pattern has uppercase chars
+set lazyredraw                  " Don't redraw screen during macros (improves performance)
+set scrolloff=10                " Keep 10 lines visible above/below the cursor
+set ttimeoutlen=10              " Reduce delay after pressing Escape (milliseconds)
+set vb                          " visualbell: flash screen instead of audible beep
 
-" Convenience for fast, careless typing.
+" ---------------------------------------------------------------------------
+" Indentation and formatting
+" ---------------------------------------------------------------------------
+set tw=0                        " textwidth: disable automatic line wrapping
+set ts=2                        " tabstop: display tabs as 2 spaces wide
+set sw=2                        " shiftwidth: indent/outdent by 2 spaces
+set expandtab                   " Convert tabs to spaces
+set ai                          " autoindent: copy indent from current line to new line
+
+" ---------------------------------------------------------------------------
+" Whitespace visualization (useful for Go and other tab-sensitive languages)
+" ---------------------------------------------------------------------------
+set list                        " Show invisible characters
+set listchars=tab:▸\            " Display tabs as ▸ followed by a space
+hi SpecialKey guifg=darkgrey ctermfg=darkgrey
+
+" ---------------------------------------------------------------------------
+" Command aliases for fast/careless typing
+" ---------------------------------------------------------------------------
 com Q q
 com W w
 com WQ wq
 com Wq wq
 
-" Highlight parts of a line that are past the line limit.
+" ---------------------------------------------------------------------------
+" Column markers for line length limits
+" ---------------------------------------------------------------------------
 autocmd BufNewFile,BufRead *.c,*.cc,*.h,*.py,*.sh,*.js,*.borg,*BUILD,*.gcl setlocal cc=81
 autocmd BufNewFile,BufRead *.java,*.go setlocal cc=101
 autocmd BufNewFile,BufRead *.java,*.go set ts=2
 hi ColorColumn ctermbg=darkgrey guibg=darkgrey
 
-" For showing tabs, useful for Go.
-set list
-set listchars=tab:�\ 
-hi SpecialKey guifg=darkgrey ctermfg=darkgrey
-
-" Key mappings.
+" ---------------------------------------------------------------------------
+" Key mappings
+" ---------------------------------------------------------------------------
+" Ctrl-A / Ctrl-E: move to start/end of line (shell-style)
 map  <C-A> <Home>
 map  <C-E> <End>
-cmap <C-R> s///g<Left><Left><Left>
 map! <C-A> <Home>
 map! <C-E> <End>
+
+" Ctrl-R in command mode: prefill substitution template
+cmap <C-R> s///g<Left><Left><Left>
+
+" F4: toggle search highlighting
 map <F4> :set hlsearch!<CR>
 imap <F4> <ESC>:set hlsearch!<CR>a
 
-" toggle paste with F3
+" F3: toggle paste mode (avoids auto-indent when pasting)
 nnoremap \tp :set invpaste paste?<CR>
 nmap <F3> \tp
 imap <F3> <C-O>\tp
 set pastetoggle=<F3>
 
-" Highlight color
+" ---------------------------------------------------------------------------
+" Search highlight color
+" ---------------------------------------------------------------------------
 hi Search term=reverse ctermbg=Red ctermfg=White guibg=Red guifg=White
 
-" Return to line we were on when we quit.
+" ---------------------------------------------------------------------------
+" Restore cursor position when reopening a file
+" ---------------------------------------------------------------------------
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line ("'\"") <= line("$") |
   \   exe "normal! g'\"" |
   \ endif
 
-" Stolen from cgw
-",v brings up my .vimrc
-"",V reloads it -- making all changes active (have to save first)
+" ---------------------------------------------------------------------------
+" Quick .vimrc access
+" ---------------------------------------------------------------------------
+" ,v  -- open .vimrc in a split
+" ,V  -- reload .vimrc without restarting vim
 map ,v :sp $HOME/.vimrc<CR><C-W>_
 map <silent> ,V :source $HOME/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
