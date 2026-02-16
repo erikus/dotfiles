@@ -147,3 +147,8 @@ export TIME='%es wall  %Us user  %Ss system  %P load    %C'
 # --- Optional environment-specific configs ---
 # Source special settings if present
 [[ -f "${ZDOTDIR:-$HOME}/.zshenv.special" ]] && source "${ZDOTDIR:-$HOME}/.zshenv.special"
+
+export PATH=$HOME/depot_tools:$HOME/bin:$PATH
+export PATH=$PATH:$HOME/.npm-packages/bin
+
+export PATH="$HOME/.local/bin:$PATH"

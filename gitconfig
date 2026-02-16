@@ -3,8 +3,8 @@
   co = checkout
   b = branch
   dt = difftool
-  dh = difftool origin/master HEAD
-  dhn = difftool origin/master HEAD --name-only
+  dh = difftool origin/main HEAD
+  dhn = difftool origin/main HEAD --name-only
   oneline = log --oneline --abbrev-commit --all --graph --decorate --color
   o = log --oneline --abbrev-commit --all --graph --decorate --color
   ru = rebase-update
@@ -33,3 +33,11 @@
   rebase = true
 [submodule]
   recurse = true
+[init]
+  defaultBranch = main
+[credential "https://github.com"]
+  helper = 
+  helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+  helper = 
+  helper = !/usr/bin/gh auth git-credential

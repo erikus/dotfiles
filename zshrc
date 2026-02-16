@@ -14,6 +14,37 @@ FIGNORE='.o:~:.class:.pyc'
 
 # --- Aliases ---
 alias ls="ls --color=auto"
+# grep colors
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='1;32'
+
+# make subversion happy
+export SVN_EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/vim
+
+# make files only mine by default
+umask 027
+
+function gvd() {
+  DISPLAY= P4DIFF=vimdiff g4 diff $@
+}
+
+function exit() {
+  if [ -e $STY ]; then
+    unfunction exit
+    exit
+  fi
+  echo "You're in screen, don't exit!"
+}
+
+function _exit() {
+  unfunction exit
+  exit
+}
+
+# aliases
+alias acs="apt-cache search"
+alias ls="ls --color=auto "
 alias sl="ls"
 alias tree='tree -Csu'
 alias p="ps x -o pgrp,pid,cmd"
@@ -21,6 +52,7 @@ alias p="ps x -o pgrp,pid,cmd"
 alias srcc="source ~/.zshrc"
 alias vi="vim -X"
 alias on="screen -x -R"
+alias tm="tmux new-session -A -s default"
 
 alias vg="vi ~/.gitconfig"
 alias vv="vi ~/.vimrc"
@@ -187,3 +219,13 @@ fi
 [[ -f "${ZDOTDIR:-$HOME}/.zshrc.compat" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.compat"
 # Source special settings if present
 [[ -f "${ZDOTDIR:-$HOME}/.zshrc.special" ]] && source "${ZDOTDIR:-$HOME}/.zshrc.special"
+###-end-npm-completion-###
+
+export PLAYDATE_SDK_PATH="$HOME/code/playdate/PlaydateSDK-3.0.3"
+export PATH="$PATH:$PLAYDATE_SDK_PATH/bin"
+
+export PATH="/home/estaab/code/chromium/src/third_party/depot_tools:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
